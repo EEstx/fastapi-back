@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+.venv/
+.env
+pyvenv.cfg
+pip-selfcheck.json
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Local
+.DS_Store
+Thumbs.db
+
+# Docker
+.dockerignore
+
+# Logs
+*.log
+
+# Databases (если используете локальный SQLite — не добавляйте его в .gitignore!)
+# Но у вас PostgreSQL в Docker — так что всё ок.
