@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from app.database import engine, Base
+from app import models
 from app.routers import auth, ste
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -19,6 +20,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.on_event("startup")
+async def startup():
+    async with engine.begin() as conn:
+        # Теперь Base.metadata точно знает про User и создаст таблицу
+        await conn.run_sync(Base.metadata.create_all)
+        
 # Создаем таблицы при старте (Для продакшена лучше использовать Alembic)
 @app.on_event("startup")
 async def startup():

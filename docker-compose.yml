@@ -21,12 +21,13 @@ services:
   # Бэкенд (FastAPI)
   web:
     build:
-      context: .            # Ищем Dockerfile в текущей папке (fastapi-back)
-      dockerfile: Dockerfile 
-    command: uvicorn backend.main:app --host 0.0.0.0 --port 8000 --reload
+      context: .
+      dockerfile: Dockerfile
+    # ИЗМЕНЕНО: запускаем модуль app.main, так как внутри контейнера папка будет называться app
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
     volumes:
-      # Прокидываем локальную папку backend внутрь контейнера в /code/backend
-      - ./backend:/code/backend
+      # ИЗМЕНЕНО: кладем локальный backend в папку app внутри контейнера
+      - ./backend:/code
     ports:
       - "8000:8000"
     depends_on:
@@ -40,7 +41,7 @@ services:
   # Фронтенд (Svelte + Vite)
   frontend:
     build:
-      context: ./frontend   # Ищем Dockerfile внутри папки frontend
+      context: ./frontend
       dockerfile: Dockerfile
     ports:
       - "5173:5173"
@@ -50,6 +51,7 @@ services:
     depends_on:
       - web
     environment:
+      # Это для работы внутри контейнера, но браузер будет стучаться на localhost:8000 снаружи
       - VITE_API_URL=http://localhost:8000
 
 volumes:
