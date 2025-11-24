@@ -2,19 +2,20 @@
 
 Приложение для группировки STE с использованием FastAPI (Backend) и Svelte 5 (Frontend).
 
-## Структура проекта
+## 📂 Структура проекта
 
 fastapi-back/
 ├── backend/ # Backend код (Python, FastAPI)
-│ ├── main.py # Точка входа
+│ ├── main.py # Точка входа приложения
 │ ├── requirements.txt # Зависимости Python
-│ └── ...
+│ └── ... (остальные файлы бэкенда)
 ├── frontend/ # Frontend код (Svelte, Vite)
 │ ├── src/ # Исходный код компонентов
 │ ├── Dockerfile # Конфиг сборки фронтенда
-│ └── package.json # Зависимости Node.js
+│ ├── package.json # Зависимости Node.js
+│ └── vite.config.js # Конфиг Vite
 ├── docker-compose.yml # Оркестрация контейнеров
-└── Dockerfile # Конфиг сборки бэкенда (для корня)
+└── Dockerfile # Конфиг сборки бэкенда (корневой)
 
 
 ## 🚀 Как запустить (Быстрый старт)
