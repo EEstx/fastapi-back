@@ -25,15 +25,15 @@ async def startup():
     async with engine.begin() as conn:
         # Теперь Base.metadata точно знает про User и создаст таблицу
         await conn.run_sync(Base.metadata.create_all)
-        
+
 # Создаем таблицы при старте (Для продакшена лучше использовать Alembic)
 @app.on_event("startup")
 async def startup():
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
 
-app.include_router(auth.router)
-app.include_router(ste.router)
+app.include_router(auth.router, prefix="/auth") 
+app.include_router(ste.router, prefix="/ste")
 
 @app.get("/")
 def root():
