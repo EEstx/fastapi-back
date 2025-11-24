@@ -24,7 +24,7 @@ fastapi-back/
 ### 1. Запуск проекта
 Находясь в корне проекта, выполните:
 
-docker-compose up -d --build
+**docker-compose up -d --build**
 
 
 Эта команда:
