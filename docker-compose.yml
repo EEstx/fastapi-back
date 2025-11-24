@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  # База данных
+  db:
+    image: postgres:15
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=ste_db
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # Бэкенд (FastAPI)
+  web:
+    build:
+      context: .            # Ищем Dockerfile в текущей папке (fastapi-back)
+      dockerfile: Dockerfile 
+    command: uvicorn backend.main:app --host 0.0.0.0 --port 8000 --reload
+    volumes:
+      # Прокидываем локальную папку backend внутрь контейнера в /code/backend
+      - ./backend:/code/backend
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://postgres:postgres@db:5432/ste_db
+      - SECRET_KEY=supersecretkey123
+      - ALGORITHM=HS256
+
+  # Фронтенд (Svelte + Vite)
+  frontend:
+    build:
+      context: ./frontend   # Ищем Dockerfile внутри папки frontend
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - web
+    environment:
+      - VITE_API_URL=http://localhost:8000
+
+volumes:
+  postgres_data:
