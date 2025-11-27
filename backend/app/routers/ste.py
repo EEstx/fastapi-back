@@ -70,3 +70,18 @@ async def move_ste(ste_id: int, group_id: int, db: AsyncSession = Depends(databa
     ste.group_id = group_id
     await db.commit()
     return {"message": "STE moved successfully"}
+
+@router.get("/{ste_id}", response_model=schemas.STEResponse)
+async def get_ste(ste_id: int, db: AsyncSession = Depends(database.get_db)):
+    """
+    Получение информации о товаре (STE) по его ID.
+    Используется для страницы карточки товара.
+    """
+    # Запрашиваем товар по ID
+    result = await db.execute(select(models.STE).where(models.STE.id == ste_id))
+    ste = result.scalars().first()
+    
+    if not ste:
+        raise HTTPException(status_code=404, detail="STE not found")
+    
+    return ste

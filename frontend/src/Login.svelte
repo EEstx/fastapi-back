@@ -35,46 +35,46 @@
     }
   }
 </script>
+<div class="login-page-wrapper">
+  <div class="login-wrapper">
+    <div class="card">
+      <h2>{isRegister ? "Регистрация" : "Вход в систему"}</h2>
+      
+      <form on:submit|preventDefault={handleSubmit} class="form-group">
+        <label>
+          <span>Логин</span>
+          <input type="text" bind:value={username} placeholder="Введите имя пользователя" required />
+        </label>
 
-<div class="login-wrapper">
-  <div class="card">
-    <h2>{isRegister ? "Регистрация" : "Вход в систему"}</h2>
-    
-    <form on:submit|preventDefault={handleSubmit} class="form-group">
-      <label>
-        <span>Логин</span>
-        <input type="text" bind:value={username} placeholder="Введите имя пользователя" required />
-      </label>
+        <label>
+          <span>Пароль</span>
+          <input type="password" bind:value={password} placeholder="Введите пароль" required />
+        </label>
 
-      <label>
-        <span>Пароль</span>
-        <input type="password" bind:value={password} placeholder="Введите пароль" required />
-      </label>
+        {#if errorMessage}
+          <div class="error">{errorMessage}</div>
+        {/if}
 
-      {#if errorMessage}
-        <div class="error">{errorMessage}</div>
-      {/if}
+        <button type="submit" class="primary-btn">
+          {isRegister ? "Зарегистрироваться" : "Войти"}
+        </button>
 
-      <button type="submit" class="primary-btn">
-        {isRegister ? "Зарегистрироваться" : "Войти"}
-      </button>
+        {#if !isRegister}
+          <button type="button" class="secondary-btn">Электронная подпись</button>
+        {/if}
+      </form>
 
-      {#if !isRegister}
-        <button type="button" class="secondary-btn">Электронная подпись</button>
-      {/if}
-    </form>
-
-    <div class="footer">
-      {#if isRegister}
-        <p>Уже есть аккаунт? <a href="#" on:click|preventDefault={() => (isRegister = false)}>Войти</a></p>
-      {:else}
-        <p>Нет аккаунта? <a href="#" on:click|preventDefault={() => (isRegister = true)}>Зарегистрируйтесь</a></p>
-        <p><a href="#" class="forgot-password">Забыли пароль?</a></p>
-      {/if}
+      <div class="footer">
+        {#if isRegister}
+          <p>Уже есть аккаунт? <a href="#" on:click|preventDefault={() => (isRegister = false)}>Войти</a></p>
+        {:else}
+          <p>Нет аккаунта? <a href="#" on:click|preventDefault={() => (isRegister = true)}>Зарегистрируйтесь</a></p>
+          <p><a href="#" class="forgot-password">Забыли пароль?</a></p>
+        {/if}
+      </div>
     </div>
   </div>
 </div>
-
 <style>
   .login-wrapper {
     width: 100%;
@@ -207,4 +207,19 @@
     color: #888;
     font-size: 0.85rem;
   }
+  :global(body) {
+    /* Убираем отступы у body на случай, если они есть */
+    margin: 0; 
+}
+
+/* Класс контейнера для центрирования */
+.login-page-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Высота во весь экран */
+    background-color: #f0f2f5; /* Цвет фона, если нужен */
+    width: 100%;
+}
+
 </style>
